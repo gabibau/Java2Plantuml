@@ -1,45 +1,36 @@
 package java2plant;
 
-import java2plant.describer.ContextDescriber;
 import java.io.File;
-import java2plant.builder.FromJavaBuilder;
 import java2plant.control.Controller;
 import java2plant.control.ToCtrl;
-import java2plant.gui.MainWindow;
 import java2plant.model.ClassList;
-import java2plant.writer.PlantWriter;
-import javax.swing.JFileChooser;
 
 /**
- *
+ * 
  * @author arthur
  */
 public class Java2Plant {
 
-	//TODO: clean up
-	private static File fInputDir;
-	private static File fOutputDir;
+    // TODO: clean up
+    private static File fInputDir;
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String[] args) {
+    private static File fOutputDir;
 
-		/*
-		 * File fPlant = new File("/home/arthur/4A/BE COO/svn/trunk/class_diagram/diag.uml");
-		 * FromPlantBuilder fpb = new FromPlantBuilder();
-		 * fpb.buildFromFile(fPlant);
-		 * System.out.println("Fini");
-		 */
-	    args = new String[] {"D:\\Git\\plantuml-server\\src\\main\\java", "D:\\Git\\plantuml-server\\target\\plantuml"};
-		if (args.length == 2) {
-			fInputDir = new File(args[0]);
-			fOutputDir = new File(args[1]);
-        		ToCtrl ctrl = Controller.getInstance();
-        		ctrl.setInputFile(fInputDir);
-        		ctrl.setOutputFile(fOutputDir);
-        		ctrl.parseJava();
-        		ctrl.writePlant(ClassList.getInstance());
-                }
-	}
+    /**
+     * @param args
+     *            the command line arguments
+     */
+    public static void main(String[] args) {
+
+        if (args.length < 2) {
+            return;
+        }
+        fInputDir = new File(args[0]);
+        fOutputDir = new File(args[1]);
+        ToCtrl ctrl = Controller.getInstance();
+        ctrl.setInputFile(fInputDir);
+        ctrl.setOutputFile(fOutputDir);
+        ctrl.parseJava();
+        ctrl.writePlant(ClassList.getInstance());
+    }
 }

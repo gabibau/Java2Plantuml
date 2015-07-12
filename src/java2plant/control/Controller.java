@@ -16,50 +16,53 @@ import java2plant.writer.AbstractWriter;
 import java2plant.writer.PlantWriter;
 
 /**
- *
+ * 
  * @author arthur
  */
 public class Controller implements ToCtrl {
 
-	private static Controller ctrl = null;
-	private AbstractBuilder parser = null;
-	private Gui gui = null;
-	private AbstractWriter writer = null;
+    private static Controller ctrl = null;
 
-	private Controller() {
-	}
+    private AbstractBuilder parser = null;
 
-	public static Controller getInstance() {
-		if(Controller.ctrl == null) {
-			Controller.ctrl = new Controller();
-		}
-		return Controller.ctrl;
-	}
+    private AbstractWriter writer = null;
 
-	public void setGui(Gui gui) {
-		this.gui = gui;
-	}
+    private Controller() {
 
-	@Override
-	public void setInputFile(File in) {
-		AppData.getInstance().setInputFile(in);
-	}
+    }
 
-	@Override
-	public void setOutputFile(File out) {
-		AppData.getInstance().setOutputFile(out);
-	}
+    public static Controller getInstance() {
 
-	@Override
-	public void parseJava() {
-		this.parser = new FromJavaBuilder();
-		parser.buildFromFile(AppData.getInstance().getInputFile());
-	}
+        if (Controller.ctrl == null) {
+            Controller.ctrl = new Controller();
+        }
+        return Controller.ctrl;
+    }
 
-	@Override
-	public void writePlant(ClassCollection classes) {
-		this.writer = new PlantWriter(classes);
-		writer.write(AppData.getInstance().getOutputFile());
-	}
-    
+    @Override
+    public void setInputFile(File in) {
+
+        AppData.getInstance().setInputFile(in);
+    }
+
+    @Override
+    public void setOutputFile(File out) {
+
+        AppData.getInstance().setOutputFile(out);
+    }
+
+    @Override
+    public void parseJava() {
+
+        this.parser = new FromJavaBuilder();
+        parser.buildFromFile(AppData.getInstance().getInputFile());
+    }
+
+    @Override
+    public void writePlant(ClassCollection classes) {
+
+        this.writer = new PlantWriter(classes);
+        writer.write(AppData.getInstance().getOutputFile());
+    }
+
 }

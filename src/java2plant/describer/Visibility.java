@@ -5,27 +5,28 @@
 package java2plant.describer;
 
 /**
- *
+ * 
  * @author arthur
  */
-public class Visibility { 
+public class Visibility {
 
     String visibility = "private";
-    
+
     public Visibility(String vis) {
-        if( vis.equals("public")) {
+
+        if (vis.equals("public")) {
             this.visibility = vis;
-        } else if( vis.equals("protected")) {
+        } else if (vis.equals("protected")) {
             this.visibility = vis;
-        } else if( vis.equals("package")) {
+        } else if (vis.equals("package")) {
             this.visibility = vis;
-        } else if( vis.equals("-")) {
+        } else if (vis.equals("-")) {
             this.visibility = "private";
-        } else if( vis.equals("#")) {
+        } else if (vis.equals("#")) {
             this.visibility = "protected";
-        } else if( vis.equals("~")) {
+        } else if (vis.equals("~")) {
             this.visibility = "package";
-        } else if( vis.equals("+")) {
+        } else if (vis.equals("+")) {
             this.visibility = "public";
         } else {
             this.visibility = "private";
@@ -34,6 +35,7 @@ public class Visibility {
 
     @Override
     public String toString() {
+
         return this.visibility;
     }
 

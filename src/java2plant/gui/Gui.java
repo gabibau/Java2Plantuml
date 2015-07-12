@@ -5,11 +5,9 @@
 package java2plant.gui;
 
 /**
- *
+ * 
  * @author arthur
  */
 public interface Gui {
 
-	
-	
 }

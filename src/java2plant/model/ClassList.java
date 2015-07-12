@@ -11,70 +11,80 @@ import java2plant.describer.ClassDescriber;
 import javax.swing.AbstractListModel;
 
 /**
- *
+ * 
  * @author arthur
  */
 public class ClassList extends AbstractListModel implements ClassCollection {
 
-	private static ClassList instance = null;
-	private ConcurrentHashMap<String, ClassDescriber> classes = new ConcurrentHashMap();
+    private static ClassList instance = null;
 
-	private ClassList() {
-	}
+    private ConcurrentHashMap<String, ClassDescriber> classes = new ConcurrentHashMap();
 
-	public static ClassList getInstance() {
-		if (instance == null) {
-			instance = new ClassList();
-		}
-		return instance;
-	}
+    private ClassList() {
 
-	public void addClass(ClassDescriber c) {
-		classes.put(c.getPackage() + "." + c.getName(), c);
-		fireContentsChanged(this, 0, getSize());
-	}
+    }
 
-	public ClassDescriber getClass(String id) {
-		return classes.get(id);
-	}
+    public static ClassList getInstance() {
 
-	public ClassDescriber getClass(String pack, String name) {
-		ClassDescriber result = null;
-		if (classes.containsKey(pack + "." + name)) {
-			result = classes.get(pack + "." + name);
-		} else {
-			result = new ClassDescriber();
-			result.setName(name);
-			result.setPackage(pack);
-			addClass(result);
-		}
-		return result;
-	}
+        if (instance == null) {
+            instance = new ClassList();
+        }
+        return instance;
+    }
 
-	@Override
-	public boolean classExists(String className) {
-		boolean result = false;
-		for (ClassDescriber c : classes.values()) {
-			if (className.equals(c.getPackage() + "." + c.getName())) {
-				result = true;
-			}
-		}
+    public void addClass(ClassDescriber c) {
 
-		return result;
-	}
+        classes.put(c.getPackage() + "." + c.getName(), c);
+        fireContentsChanged(this, 0, getSize());
+    }
 
-	@Override
-	public Collection<ClassDescriber> getClasses() {
-		return classes.values();
-	}
+    public ClassDescriber getClass(String id) {
 
-	@Override
-	public int getSize() {
-		return classes.size();
-	}
+        return classes.get(id);
+    }
 
-	@Override
-	public Object getElementAt(int index) {
-		return new ArrayList(classes.keySet()).get(index);
-	}
+    public ClassDescriber getClass(String pack, String name) {
+
+        ClassDescriber result = null;
+        if (classes.containsKey(pack + "." + name)) {
+            result = classes.get(pack + "." + name);
+        } else {
+            result = new ClassDescriber();
+            result.setName(name);
+            result.setPackage(pack);
+            addClass(result);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean classExists(String className) {
+
+        boolean result = false;
+        for (ClassDescriber c : classes.values()) {
+            if (className.equals(c.getPackage() + "." + c.getName())) {
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public Collection<ClassDescriber> getClasses() {
+
+        return classes.values();
+    }
+
+    @Override
+    public int getSize() {
+
+        return classes.size();
+    }
+
+    @Override
+    public Object getElementAt(int index) {
+
+        return new ArrayList(classes.keySet()).get(index);
+    }
 }

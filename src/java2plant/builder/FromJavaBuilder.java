@@ -330,9 +330,8 @@ public class FromJavaBuilder extends AbstractBuilder {
         int a = str.indexOf("(");
         int b = str.indexOf(")");
 
-
         str = str.replace("@SuppressWarnings)", "");
-        str =  str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+        str = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
 
         if (!str.isEmpty()) {
             split = splitString(str, ",");

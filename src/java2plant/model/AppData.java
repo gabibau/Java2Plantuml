@@ -8,54 +8,64 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- *
+ * 
  * @author arthur
  */
 public class AppData {
 
-	static AppData instance = null;
+    static AppData instance = null;
 
-	private File inputFile;
-	private File outputFile;
-	private ArrayList<ClassFilter> filters = new ArrayList();
-	private int currentFilter = -1;
+    private File inputFile;
 
-	private AppData() {
-	}
+    private File outputFile;
 
-	public static AppData getInstance() {
-		if(instance == null) {
-			instance = new AppData();
-		}
-		return instance;
-	}
+    private ArrayList<ClassFilter> filters = new ArrayList();
 
-	public ClassFilter getCurrentFilter() {
-		ClassFilter filter = null;
-		if(currentFilter == -1) {
-			filter = new ClassFilter(ClassList.getInstance());
-			filters.add(filter);
-			this.currentFilter = filters.size() - 1;
-		} else {
-			filter = filters.get(currentFilter);
-		}
-		return filter;
-	}
+    private int currentFilter = -1;
 
-	public File getInputFile() {
-		return inputFile;
-	}
+    private AppData() {
 
-	public void setInputFile(File inputFile) {
-		this.inputFile = inputFile;
-	}
+    }
 
-	public File getOutputFile() {
-		return outputFile;
-	}
+    public static AppData getInstance() {
 
-	public void setOutputFile(File outputFile) {
-		this.outputFile = outputFile;
-	}
-	
+        if (instance == null) {
+            instance = new AppData();
+        }
+        return instance;
+    }
+
+    public ClassFilter getCurrentFilter() {
+
+        ClassFilter filter = null;
+        if (currentFilter == -1) {
+            filter = new ClassFilter(ClassList.getInstance());
+            filters.add(filter);
+            this.currentFilter = filters.size() - 1;
+        } else {
+            filter = filters.get(currentFilter);
+        }
+        return filter;
+    }
+
+    public File getInputFile() {
+
+        return inputFile;
+    }
+
+    public void setInputFile(File inputFile) {
+
+        this.inputFile = inputFile;
+    }
+
+    public File getOutputFile() {
+
+        return outputFile;
+    }
+
+    public void setOutputFile(File outputFile) {
+
+        this.outputFile = outputFile;
+    }
+
 }

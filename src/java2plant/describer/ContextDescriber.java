@@ -8,51 +8,60 @@ import java.util.Collection;
 import java2plant.model.ClassList;
 
 /**
- *
+ * 
  * @author arthur
  */
 public class ContextDescriber {
-	//TODO: this class is not that usefull anymore
+
+    // TODO: this class is not that usefull anymore
 
     private String namespace = "";
 
-	ClassList classes = null;
+    ClassList classes = null;
 
     private static ContextDescriber instance = null;
 
     private ContextDescriber() {
-		classes = ClassList.getInstance();
+
+        classes = ClassList.getInstance();
     }
 
     public static ContextDescriber getInstance() {
-        if(instance == null) {
+
+        if (instance == null) {
             instance = new ContextDescriber();
         }
         return instance;
     }
 
     public void setNamespace(String namespace) {
+
         this.namespace = namespace;
     }
 
     public void addClass(ClassDescriber c) {
-		classes.addClass(c);	
+
+        classes.addClass(c);
     }
 
     public ClassDescriber getClass(String pack, String name) {
-		return classes.getClass(pack, name);
+
+        return classes.getClass(pack, name);
     }
 
     public boolean classExists(String className) {
+
         return classes.classExists(className);
     }
 
     public Collection<ClassDescriber> getClasses() {
+
         return classes.getClasses();
     }
 
     public String getNamespace() {
+
         return this.namespace;
     }
-    
+
 }

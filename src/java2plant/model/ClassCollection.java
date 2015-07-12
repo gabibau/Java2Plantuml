@@ -8,13 +8,13 @@ import java.util.Collection;
 import java2plant.describer.ClassDescriber;
 
 /**
- *
+ * 
  * @author arthur
  */
 public interface ClassCollection {
 
-	public Collection<ClassDescriber> getClasses();
+    public Collection<ClassDescriber> getClasses();
 
-	public boolean classExists(String className);
-	
+    public boolean classExists(String className);
+
 }
