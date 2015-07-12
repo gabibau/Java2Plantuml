@@ -22,6 +22,8 @@ public class MethodDescriber {
 
     private boolean isAbstract = false;
 
+    private boolean isStatic = false;
+
     private ArrayList<ArgumentDescriber> args = new ArrayList();
 
     public MethodDescriber() {
@@ -68,6 +70,16 @@ public class MethodDescriber {
     public void setAbstract(boolean isAbstract) {
 
         this.isAbstract = isAbstract;
+    }
+
+    public boolean isStatic() {
+
+        return this.isStatic;
+    }
+
+    public void setStatic(boolean isStatic) {
+
+        this.isStatic = isStatic;
     }
 
     public ArrayList<ArgumentDescriber> getArgs() {

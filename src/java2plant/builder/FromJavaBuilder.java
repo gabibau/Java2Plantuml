@@ -302,6 +302,7 @@ public class FromJavaBuilder extends AbstractBuilder {
                 md.setVisibility(split[i]);
                 i++;
             } else if (split[i].equals("static")) {
+                md.setStatic(true);
                 i++;
             } else if (split[i].contains("final")) {
                 i++;
@@ -383,6 +384,7 @@ public class FromJavaBuilder extends AbstractBuilder {
             } else if (split[i].contains("final")) {
                 i++;
             } else if (split[i].contains("static")) {
+                fd.setStatic(true);
                 i++;
             } else {
                 fd.setType(split[i]);

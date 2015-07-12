@@ -16,6 +16,8 @@ public class FieldDescriber {
 
     private String type = "";
 
+    private boolean isStatic = false;
+
     public void setVisibility(String vis) {
 
         this.visibility = new Visibility(vis);
@@ -44,6 +46,16 @@ public class FieldDescriber {
     public String getType() {
 
         return this.type;
+    }
+
+    public boolean isStatic() {
+
+        return this.isStatic;
+    }
+
+    public void setStatic(boolean isStatic) {
+
+        this.isStatic = isStatic;
     }
 
     public void print() {

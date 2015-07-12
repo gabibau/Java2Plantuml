@@ -45,7 +45,7 @@ public class PlantWriter extends AbstractWriter {
             commonFW = new FileWriter(fOutputDir.getAbsolutePath()
                     + File.separator + "complete-diag.uml");
             commonFW.write("@startuml img/default.png\n");
-
+            UML.append("@startuml img/default-all.png\n");
             for (ClassDescriber c : classes.getClasses()) {
                 writeClass(c, fOutputDir);
                 commonFW.write("!include " + "classes" + File.separator
@@ -61,6 +61,7 @@ public class PlantWriter extends AbstractWriter {
             writeRelations(commonFW);
 
             commonFW.write("\n@enduml\n");
+            UML.append("\n@enduml\n");
 
         } catch (IOException ex) {
             Logger.getLogger(ContextDescriber.class.getName()).log(
@@ -72,6 +73,14 @@ public class PlantWriter extends AbstractWriter {
                 Logger.getLogger(ContextDescriber.class.getName()).log(
                         Level.SEVERE, null, ex);
             }
+        }
+        try {
+            FileWriter fw = new FileWriter(fOutputDir.getAbsolutePath()
+                    + File.separator + "complete-diag-all.uml");
+            fw.write(UML.toString());
+            fw.close();
+        } catch (Exception e) {
+            // TODO: handle exception
         }
     }
 
@@ -122,20 +131,28 @@ public class PlantWriter extends AbstractWriter {
             bw = new BufferedWriter(new FileWriter(filename));
 
             if (!c.getPackage().isEmpty()) {
-                bw.write("package " + c.getPackage());
+                // bw.write("package " + c.getPackage());
+                bw.write("' ---\npackage " + c.getPackage() + "{");
                 bw.newLine();
+                bw.newLine();
+                UML.append("' ---\npackage ").append(c.getPackage())
+                        .append("{").append("\n\n");
             }
             if (c.isAbstract()) {
                 bw.write("abstract ");
+                UML.append("abstract ");
             }
             if (c.isInterface()) {
                 bw.write("interface " + c.getName());
+                UML.append("interface ").append(c.getName());
             } else {
                 bw.write("class " + c.getName());
+                UML.append("class ").append(c.getName());
             }
 
             bw.write(" {");
             bw.newLine();
+            UML.append(" {").append("\n");
             for (FieldDescriber fd : c.getFields()) {
                 writeField(fd, bw);
                 addRelation(c.getName(), fd.getType());
@@ -143,17 +160,27 @@ public class PlantWriter extends AbstractWriter {
             for (MethodDescriber md : c.getMethods()) {
                 writeMethod(md, bw);
             }
-            bw.write("}");
+            // bw.write("}');
+            bw.write("}\n'    ----- end class " + c.getName());
             bw.newLine();
-
+            bw.newLine();
+            UML.append("}\n'    ----- end class ").append(c.getName())
+                    .append("\n\n");
             for (String inh : c.getInheritances()) {
                 bw.write(" " + c.getName() + " --|> " + inh);
                 bw.newLine();
+                UML.append(" ").append(c.getName()).append(" --|> ")
+                        .append(inh).append("\n");
             }
 
             if (!c.getPackage().isEmpty()) {
-                bw.write("end package");
+                // bw.write("end package");
+                bw.write("}\n'    ------------------------ end package "
+                        + c.getPackage());
                 bw.newLine();
+                bw.newLine();
+                UML.append("}\n'    ------------------------ end package ")
+                        .append(c.getPackage()).append("\n\n");
             }
         } catch (IOException ex) {
             Logger.getLogger(ClassDescriber.class.getName()).log(Level.SEVERE,
@@ -171,9 +198,12 @@ public class PlantWriter extends AbstractWriter {
     public void writeField(FieldDescriber fd, BufferedWriter bw) {
 
         try {
+            String type = fd.isStatic() ? " {static} " : " ";
             writeVisibility(fd.getVisibility(), bw);
-            bw.write(" " + fd.getName() + ":" + fd.getType());
+            bw.write(type + fd.getName() + ":" + fd.getType());
             bw.newLine();
+            UML.append(type).append(fd.getName()).append(":")
+                    .append(fd.getType()).append("\n");
         } catch (IOException ex) {
             Logger.getLogger(FieldDescriber.class.getName()).log(Level.SEVERE,
                     null, ex);
@@ -183,21 +213,29 @@ public class PlantWriter extends AbstractWriter {
     public void writeMethod(MethodDescriber md, BufferedWriter bw) {
 
         try {
+            String type = md.isStatic() ? " {static} " : " ";
+            type = " ".equals(type) ? (md.isAbstract() ? " {abstract} " : " ")
+                    : type;
             writeVisibility(md.getVisibility(), bw);
-            bw.write(" " + md.getName() + "(");
+            bw.write(type + md.getName() + "(");
+            UML.append(type).append(md.getName()).append("(");
             for (Iterator it = md.getArgs().iterator(); it.hasNext();) {
                 ArgumentDescriber arg = (ArgumentDescriber) it.next();
                 writeArgument(arg, bw);
                 if (it.hasNext()) {
                     bw.write(", ");
+                    UML.append(",");
                 }
             }
             if (md.getReturnType().equals("void")) {
                 bw.write(")");
+                UML.append(")");
             } else {
                 bw.write("):" + md.getReturnType());
+                UML.append("):").append(md.getReturnType());
             }
             bw.newLine();
+            UML.append("\n");
 
         } catch (IOException ex) {
             Logger.getLogger(MethodDescriber.class.getName()).log(Level.SEVERE,
@@ -209,6 +247,7 @@ public class PlantWriter extends AbstractWriter {
 
         try {
             bw.write(arg.getName() + ":" + arg.getType());
+            UML.append(arg.getName()).append(":").append(arg.getType());
         } catch (IOException ex) {
             Logger.getLogger(ArgumentDescriber.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -225,11 +264,16 @@ public class PlantWriter extends AbstractWriter {
             result = "#";
         } else if (visibility.equals("package")) {
             result = "~";
+        } else if (visibility.equals("static")) {
+            result = "{static}";
+        } else if (visibility.equals("abstract")) {
+            result = "{abstract}";
         } else {
             result = "-";
         }
         try {
             bw.write(result);
+            UML.append(result);
         } catch (IOException ex) {
             Logger.getLogger(Visibility.class.getName()).log(Level.SEVERE,
                     null, ex);

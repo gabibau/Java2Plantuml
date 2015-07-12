@@ -7,11 +7,8 @@ package java2plant.control;
 import java.io.File;
 import java2plant.builder.AbstractBuilder;
 import java2plant.builder.FromJavaBuilder;
-import java2plant.describer.ContextDescriber;
-import java2plant.gui.Gui;
 import java2plant.model.AppData;
 import java2plant.model.ClassCollection;
-import java2plant.model.ClassList;
 import java2plant.writer.AbstractWriter;
 import java2plant.writer.PlantWriter;
 
@@ -63,6 +60,8 @@ public class Controller implements ToCtrl {
 
         this.writer = new PlantWriter(classes);
         writer.write(AppData.getInstance().getOutputFile());
+        System.out.println("\n\n");
+        System.out.println(writer.UML);
     }
 
 }

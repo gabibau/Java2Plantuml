@@ -12,7 +12,7 @@ import java2plant.describer.ContextDescriber;
  * 
  * @author arthur
  */
-abstract public class AbstractBuilder {
+public abstract class AbstractBuilder {
 
     protected InputStream is;
 

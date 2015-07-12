@@ -28,6 +28,10 @@ public class Visibility {
             this.visibility = "package";
         } else if (vis.equals("+")) {
             this.visibility = "public";
+        } else if (vis.equals("{static}")) {
+            this.visibility = "static";
+        } else if (vis.equals("{abstract}")) {
+            this.visibility = "abstract";
         } else {
             this.visibility = "private";
         }
