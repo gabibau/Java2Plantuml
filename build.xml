@@ -7,11 +7,33 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="Java2Plant" default="default" basedir=".">
+<project name="Java2Plant" default="compile" basedir=".">
     <description>Builds, tests, and runs the project Java2Plant.</description>
-    <import file="nbproject/build-impl.xml"/>
+	<property name="src" value="src"/>
+	<property name="classes" value="classes"/>
+	<property name="dest" value="dest"/>
+	<path id="classpath">
+		<pathelement path="${classes}"/>
+	</path>
+	<target name="compile">
+		<delete dir="${classes}"/>
+		<mkdir dir="${classes}"/>
+		<javac srcdir="${src}" destdir="${classes}"/>
+	</target>
+	<target name="run" depends="compile">
+		<java classname="java2plant" fork="yes">
+			<classpath path="${classes}"/>
+		</java>
+	</target>
+	<target name="clean">
+		<delete dir="${classes}"/>
+		<delete dir="${dest}"/>
+	</target>
+    <target name="dist" depends="compile">
+        <jar jarfile="java2plant.jar" basedir="."/>
+    </target>
     <!--
-
+	<import file="nbproject/build-impl.xml"/>
     There exist several targets which are by default empty and which can be 
     used for execution of your tasks. These targets are usually executed 
     before and after some main targets. They are: 

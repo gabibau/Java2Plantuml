@@ -6,6 +6,7 @@ import java2plant.builder.FromJavaBuilder;
 import java2plant.control.Controller;
 import java2plant.control.ToCtrl;
 import java2plant.gui.MainWindow;
+import java2plant.model.ClassList;
 import java2plant.writer.PlantWriter;
 import javax.swing.JFileChooser;
 
@@ -30,23 +31,15 @@ public class Java2Plant {
 		 * fpb.buildFromFile(fPlant);
 		 * System.out.println("Fini");
 		 */
+	    args = new String[] {"D:\\Git\\plantuml-server\\src\\main\\java", "D:\\Git\\plantuml-server\\target\\plantuml"};
 		if (args.length == 2) {
 			fInputDir = new File(args[0]);
 			fOutputDir = new File(args[1]);
-		} else {
-			JFileChooser fc = new JFileChooser();
-			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			fc.showDialog(null, "Choose a directory containing your sources");
-			fInputDir = fc.getSelectedFile();
-			fc.showDialog(null, "Choose the output directory");
-			fOutputDir = fc.getSelectedFile();
-		}
-		MainWindow win = new MainWindow();
-		ToCtrl ctrl = Controller.getInstance();
-
-		ctrl.setInputFile(fInputDir);
-		ctrl.setOutputFile(fOutputDir);
-		ctrl.parseJava();
-
+        		ToCtrl ctrl = Controller.getInstance();
+        		ctrl.setInputFile(fInputDir);
+        		ctrl.setOutputFile(fOutputDir);
+        		ctrl.parseJava();
+        		ctrl.writePlant(ClassList.getInstance());
+                }
 	}
 }

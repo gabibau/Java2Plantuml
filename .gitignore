@@ -3,3 +3,5 @@ dist/
 uml/
 nbproject/
 
+/bin
+/java2plant.jar
