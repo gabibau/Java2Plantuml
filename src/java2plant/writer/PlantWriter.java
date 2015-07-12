@@ -104,7 +104,7 @@ public class PlantWriter extends AbstractWriter {
 
     public void addRelation(String class1, String class2) {
 
-        //System.out.println("-->" + class1 + ":" + class2);
+        // System.out.println("-->" + class1 + ":" + class2);
         if (class2.contains("<") && class2.indexOf(">") > class2.indexOf("<")) {
             class2 = class2.substring(class2.indexOf("<") + 1,
                     class2.indexOf(">"));
@@ -122,8 +122,8 @@ public class PlantWriter extends AbstractWriter {
         for (Relation r : relations) {
             try {
                 fw.write(r.getClass1() + " --> " + r.getClass2() + "\n");
-                UML.append("\n\n\n").append(r.getClass1()).append(" --> ").append(r.getClass2())
-                        .append("\n");
+                UML.append(r.getClass1()).append(" --> ").append(r.getClass2())
+                        .append("\n\n");
             } catch (IOException ex) {
                 Logger.getLogger(PlantWriter.class.getName()).log(Level.SEVERE,
                         null, ex);
