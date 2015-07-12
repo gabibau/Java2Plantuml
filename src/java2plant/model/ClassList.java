@@ -62,7 +62,10 @@ public class ClassList extends AbstractListModel implements ClassCollection {
 
         boolean result = false;
         for (ClassDescriber c : classes.values()) {
-            if (className.equals(c.getPackage() + "." + c.getName())) {
+            // System.out.println("-------->" + className + ":" + c.getPackage()
+            // + "." + c.getName());
+            // if (className.equals(c.getPackage() + "." + c.getName())) {
+            if (className.equals(c.getName())) {
                 result = true;
             }
         }

@@ -61,7 +61,7 @@ public class Controller implements ToCtrl {
         this.writer = new PlantWriter(classes);
         writer.write(AppData.getInstance().getOutputFile());
         System.out.println("\n\n");
-        System.out.println(writer.UML);
+        //System.out.println(writer.UML);
     }
 
 }
