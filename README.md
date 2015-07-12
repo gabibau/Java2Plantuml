@@ -3,7 +3,7 @@ A tool to generate PlantUML source files from java sources.
 
 See https://github.com/athy/Java2Plant
 
-[[img/default-all.png]]
+![[img/default-all.png]](https://github.com/forsrc/Java2Plantuml/blob/master/img/default-all.png?raw=true)
 
 ```
 @startuml img/default-all.png
