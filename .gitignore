@@ -3,6 +3,8 @@ dist/
 uml/
 nbproject/
 
+nbbuild.xml
+
 /bin
 /java2plant.jar
 /temp

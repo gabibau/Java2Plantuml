@@ -72,14 +72,14 @@ public class FromPlantBuilder extends AbstractBuilder {
                             } else {
                                 Logger.getLogger(
                                         FromPlantBuilder.class.getName()).log(
-                                        Level.SEVERE, null);
+                                        Level.SEVERE, "null");
                             }
                         }
                         cd.setPackage(context.getNamespace());
                         cd.setAbstract(isAbstract);
                     } else {
                         Logger.getLogger(FromPlantBuilder.class.getName()).log(
-                                Level.SEVERE, null);
+                                Level.SEVERE, "null");
                     }
                 } else if (line.contains("}")) {
                     cd = null;
