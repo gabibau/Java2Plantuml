@@ -53,7 +53,6 @@ public class FromJavaBuilder extends AbstractBuilder {
 
             for (File f : files) {
                 FileInputStream fis = new FileInputStream(f);
-                AbstractBuilder builder = new FromJavaBuilder();
                 buildFromStream(fis);
             }
 
@@ -182,7 +181,7 @@ public class FromJavaBuilder extends AbstractBuilder {
     public String getNext(String src) {
 
         String next = "";
-
+       
         if (src.indexOf(";") != -1
                 && (src.indexOf(";") < src.indexOf("{") || src.indexOf("{") == -1)) {
             next = src.substring(0, src.indexOf(";") + 1);
@@ -198,7 +197,11 @@ public class FromJavaBuilder extends AbstractBuilder {
                 }
                 i++;
             }
-            next = src.substring(0, i);
+            if (src.substring(i, i + 1).equals(";")) {
+                next = src.substring(0, i + 1);
+            } else { 
+                next = src.substring(0, i);
+            }
         }
 
         return next;
@@ -270,7 +273,7 @@ public class FromJavaBuilder extends AbstractBuilder {
         while (!str.isEmpty()) {
             String current = getNext(str);
             declaration = extractDeclaration(current);
-
+            
             if (current.isEmpty()) {
                 str = "";
             } else if (current.endsWith(";") && declaration.contains("=")) {
@@ -279,6 +282,9 @@ public class FromJavaBuilder extends AbstractBuilder {
             } else if (current.endsWith(";") && !declaration.contains("(")) {
                 FieldDescriber field = buildFieldFromString(current);
                 cd.addField(field);
+            } else if (declaration.contains("class")){ // inner class
+                ClassDescriber buildClassFromString = buildClassFromString(current);
+                // Do what?
             } else {
                 MethodDescriber method = buildMethodFromString(declaration);
                 cd.addMethod(method);
@@ -292,11 +298,12 @@ public class FromJavaBuilder extends AbstractBuilder {
     public MethodDescriber buildMethodFromString(String str) {
 
         MethodDescriber md = new MethodDescriber();
-        System.out.println("MethodBuilder : " + str);
         String[] split = splitString(str);
         int i = 0;
         while (i < split.length) {
-            if (split[i].equals("public") || split[i].equals("private")
+            if (split[i].isEmpty() || split[i].trim().isEmpty()) {
+                i++;
+            } else if (split[i].equals("public") || split[i].equals("private")
                     || split[i].equals("protected")
                     || split[i].equals("package")) {
                 md.setVisibility(split[i]);
@@ -328,9 +335,6 @@ public class FromJavaBuilder extends AbstractBuilder {
 
         }
         /* Construction des arguments */
-        int a = str.indexOf("(");
-        int b = str.indexOf(")");
-
         str = str.replace("@SuppressWarnings)", "");
         str = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
 
@@ -348,11 +352,10 @@ public class FromJavaBuilder extends AbstractBuilder {
     public ArgumentDescriber buildArgumentFromString(String str) {
 
         ArgumentDescriber ad = new ArgumentDescriber();
-        System.out.println("ArgDescriber : " + str);
 
         String[] split = splitString(str);
         int i = 0;
-        while (i < split.length && split[i].isEmpty()) {
+        while (i < split.length && (split[i].isEmpty() || split[i].contains("final"))) {
             i++;
         }
         ad.setType(split[i]);
@@ -376,7 +379,9 @@ public class FromJavaBuilder extends AbstractBuilder {
         String[] split = splitString(str);
         int i = 0;
         while (i < split.length) {
-            if (split[i].equals("public") || split[i].equals("private")
+            if (split[i].isEmpty() || split[i].trim().isEmpty()) {
+                i++;
+            } else if (split[i].equals("public") || split[i].equals("private")
                     || split[i].equals("protected")
                     || split[i].equals("package")) {
                 fd.setVisibility(split[i]);
