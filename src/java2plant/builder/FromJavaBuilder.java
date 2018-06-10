@@ -85,6 +85,8 @@ public class FromJavaBuilder extends AbstractBuilder {
                 // TODO: pas constistant avec le reste (pas de add)
             } else if (str.contains(" interface ")) {
                 buildClassFromString(str);
+            } else if (str.contains(" enum ")) {
+                buildClassFromString(str);
             }
             str = getNext(is);
             decla = extractDeclaration(str);
@@ -239,6 +241,9 @@ public class FromJavaBuilder extends AbstractBuilder {
                 i++;
                 cd = context.getClass(context.getNamespace(), split[i]);
                 cd.setInterface(true);
+            } else if (split[i].equals("enum")) {
+                i++;
+                cd = context.getClass(context.getNamespace(), split[i]);
             }
         }
 
@@ -284,6 +289,7 @@ public class FromJavaBuilder extends AbstractBuilder {
                 cd.addField(field);
             } else if (declaration.contains("class")){ // inner class
                 ClassDescriber buildClassFromString = buildClassFromString(current);
+                buildClassFromString.setVisibility("private");
                 // Do what?
             } else {
                 MethodDescriber method = buildMethodFromString(declaration);

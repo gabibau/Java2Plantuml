@@ -159,6 +159,11 @@ public class PlantWriter extends AbstractWriter {
             } else {
                 bw.write("class " + c.getName());
                 UML.append("class ").append(c.getName());
+                
+                if ("private".equals(c.getVisibility().toString())) {
+                    bw.write(" << Inner >> <<(P, purple) >> ");
+                    UML.append(" << Inner >> <<(P, purple) >> ");
+                }
             }
 
             bw.write(" {");
@@ -177,12 +182,6 @@ public class PlantWriter extends AbstractWriter {
             bw.newLine();
             UML.append("}\n'    ----- end class ").append(c.getName())
                     .append("\n\n");
-            for (String inh : c.getInheritances()) {
-                bw.write(" " + c.getName() + " --|> " + inh);
-                bw.newLine();
-                UML.append(" ").append(c.getName()).append(" --|> ")
-                        .append(inh).append("\n");
-            }
 
             if (!c.getPackage().isEmpty()) {
                 // bw.write("end package");
@@ -192,6 +191,13 @@ public class PlantWriter extends AbstractWriter {
                 bw.newLine();
                 UML.append("}\n'    ------------------------ end package ")
                         .append(c.getPackage()).append("\n\n");
+            }
+            
+            for (String inh : c.getInheritances()) {
+                  bw.write(" " + inh + " <|-- " + c.getName());
+                  bw.newLine();
+                  UML.append(" ").append(inh).append(" <|-- ")
+                        .append(c.getName()).append("\n");
             }
         } catch (IOException ex) {
             Logger.getLogger(ClassDescriber.class.getName()).log(Level.SEVERE,
