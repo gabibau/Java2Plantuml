@@ -15,7 +15,7 @@ import java2plant.describer.FieldDescriber;
 import java2plant.describer.MethodDescriber;
 
 /**
- * 
+ *
  * @author arthur
  */
 public class FromJavaBuilder extends AbstractBuilder {
@@ -183,7 +183,7 @@ public class FromJavaBuilder extends AbstractBuilder {
     public String getNext(String src) {
 
         String next = "";
-       
+
         if (src.indexOf(";") != -1
                 && (src.indexOf(";") < src.indexOf("{") || src.indexOf("{") == -1)) {
             next = src.substring(0, src.indexOf(";") + 1);
@@ -201,7 +201,7 @@ public class FromJavaBuilder extends AbstractBuilder {
             }
             if (src.substring(i, i + 1).equals(";")) {
                 next = src.substring(0, i + 1);
-            } else { 
+            } else {
                 next = src.substring(0, i);
             }
         }
@@ -278,7 +278,7 @@ public class FromJavaBuilder extends AbstractBuilder {
         while (!str.isEmpty()) {
             String current = getNext(str);
             declaration = extractDeclaration(current);
-            
+
             if (current.isEmpty()) {
                 str = "";
             } else if (current.endsWith(";") && declaration.contains("=")) {
@@ -287,10 +287,12 @@ public class FromJavaBuilder extends AbstractBuilder {
             } else if (current.endsWith(";") && !declaration.contains("(")) {
                 FieldDescriber field = buildFieldFromString(current);
                 cd.addField(field);
-            } else if (declaration.contains("class")){ // inner class
+            } else if (declaration.contains("class")) { // inner class
                 ClassDescriber buildClassFromString = buildClassFromString(current);
                 buildClassFromString.setVisibility("private");
-                // Do what?
+            } else if (declaration.contains("enum")) { // inner class
+                ClassDescriber buildClassFromString = buildClassFromString(current);
+                buildClassFromString.setVisibility("private");
             } else {
                 MethodDescriber method = buildMethodFromString(declaration);
                 cd.addMethod(method);
