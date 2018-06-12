@@ -187,6 +187,9 @@ public class FromJavaBuilder extends AbstractBuilder {
         if (src.indexOf(";") != -1
                 && (src.indexOf(";") < src.indexOf("{") || src.indexOf("{") == -1)) {
             next = src.substring(0, src.indexOf(";") + 1);
+        } else if (src.indexOf(";") != -1 && src.indexOf("=") != -1 && src.indexOf("{") != -1
+                && src.indexOf("=") < src.indexOf("{")) {
+            next = src.substring(0, src.indexOf(";") + 1);
         } else if (src.indexOf("{") != -1) {
             int openedBraces = 1;
             int i = src.indexOf("{") + 1;
@@ -279,7 +282,7 @@ public class FromJavaBuilder extends AbstractBuilder {
             String current = getNext(str);
             declaration = extractDeclaration(current);
 
-            if (current.isEmpty()) {
+            if (current.isEmpty() || current.contains("static {")) { //Not precess static blocks
                 str = "";
             } else if (current.endsWith(";") && declaration.contains("=")) {
                 FieldDescriber field = buildFieldFromString(current);
@@ -344,6 +347,9 @@ public class FromJavaBuilder extends AbstractBuilder {
         }
         /* Construction des arguments */
         str = str.replace("@SuppressWarnings)", "");
+
+        System.out.println(" problem string: " + str);
+
         str = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
 
         if (!str.isEmpty()) {
